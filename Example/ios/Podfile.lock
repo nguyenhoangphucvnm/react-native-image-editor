@@ -1239,7 +1239,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-blob-util (0.21.3):
+  - react-native-blob-util (0.21.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1260,7 +1260,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-image-editor (1.0.1):
+  - react-native-image-editor (1.0.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1798,7 +1798,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   iOSPhotoEditor:
-    :commit: 30f2db6c24fd40a45f4cb2db866479e6f7be7b69
+    :commit: ba183994bb94248b9a4d099638871ca62e7956be
     :git: https://github.com/phucprime/photo-editor
 
 SPEC CHECKSUMS:
@@ -1809,7 +1809,7 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: 2771b98fb813fdc6f92edd7c9c0035ecabf9fee7
-  iOSPhotoEditor: 2951f35246a31dcb428b6292248a9c065582d03e
+  iOSPhotoEditor: 47a1e82bc42bf985d2f331d3a947a781991abab6
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: be794de7dc6ed8f9f7fbf525f86e7651b8b68746
   RCTRequired: a83787b092ec554c2eb6019ff3f5b8d125472b3b
@@ -1840,8 +1840,8 @@ SPEC CHECKSUMS:
   React-logger: 763728cf4eebc9c5dc9bfc3649e22295784f69f3
   React-Mapbuffer: 86e068fae064bbd3f24781d6ae5445b0266b2a10
   React-microtasksnativemodule: fd98e3e44af51599576705ec7a85a36e35978913
-  react-native-blob-util: 775b994555980f1687e3fd918a4e6d0044aaeb39
-  react-native-image-editor: b17d04d5d56041980fb284afdec8b862d775ed22
+  react-native-blob-util: d03eaad9fd1bbe90bd0eedb5bad3333215976086
+  react-native-image-editor: 9d0e15540ac6c8288dd3b15439287b46abd265d1
   React-NativeModulesApple: 5c61cef9e7f0e1d6216ff0af41a3b882806a5cec
   React-perflogger: 5f8fa36a8e168fb355efe72099efe77213bc2ac6
   React-performancetimeline: 4f3521ee6238c9caf1b0969da2c4f610ff72b922
@@ -1874,6 +1874,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 6eb60fc2c0eef63e7d2ef4a56e0a3353534143a2
 
-PODFILE CHECKSUM: 5b0491a12b396dc4b16d2259f39906d9dddba925
+PODFILE CHECKSUM: 430e7360ccd243235bddbdc75f5c78fc4d37adc9
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

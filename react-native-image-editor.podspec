@@ -15,6 +15,14 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
   s.dependency "iOSPhotoEditor"
 
+  # Always enforce C++17 so that C++ standard-library headers (<utility>, <vector>,
+  # <chrono>, …) resolve correctly when the pod is compiled alongside React Native's
+  # C++ TurboModule/JSI headers, regardless of architecture or RN version.
+  s.pod_target_xcconfig = {
+    "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
+    "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+  }
+
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   if respond_to?(:install_modules_dependencies, true)
     install_modules_dependencies(s)
@@ -24,11 +32,6 @@ Pod::Spec.new do |s|
     # Don't install the dependencies when we run `pod install` in the old architecture.
     if ENV["RCT_NEW_ARCH_ENABLED"] == "1"
       s.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
-      s.pod_target_xcconfig = {
-        "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",
-        "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
-        "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
-      }
       s.dependency "React-Codegen"
       s.dependency "RCT-Folly"
       s.dependency "RCTRequired"

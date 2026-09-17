@@ -9,8 +9,6 @@ node_modules/
 npm-debug.log*
 yarn-error.log*
 yarn-debug.log*
-package-lock.json
-yarn.lock
 
 # Build output
 lib/
@@ -68,3 +66,5 @@ buck-out/
 # Misc
 *.log
 *.tsbuildinfo
+.yarn
+.pnp*

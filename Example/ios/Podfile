@@ -24,6 +24,26 @@ target "Example" do
       :path => "../node_modules/react-native-blob-util"
 
   post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+      config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+      config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ''
+      config.build_settings['CODE_SIGNING_REQUIRED'] = 'NO'
+    end
+
+    # Ensure the react-native-image-editor pod target compiles with C++17 so
+    # that C++ standard-library headers (<utility>, <vector>, <chrono>, …)
+    # included transitively via TurboModule/JSI headers are found correctly.
+    installer.pods_project.targets.each do |target|
+      if target.name == "react-native-image-editor"
+        target.build_configurations.each do |config|
+          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] = '$(inherited) -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1'
+        end
+      end
+    end
+
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
