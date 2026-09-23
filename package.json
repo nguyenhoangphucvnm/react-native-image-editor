@@ -2,19 +2,19 @@
   "name": "@phucprime/react-native-image-editor",
   "version": "1.0.3",
   "description": "React Native: Native Image Editor for iOS and Android with drawing, text, stickers, cropping and more",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "react-native": "src/index",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index.ts",
   "source": "src/index.ts",
   "files": [
-    "src/",
-    "lib/",
-    "ios/",
-    "android/",
-    "react-native-image-editor.podspec",
-    "!android/build/",
-    "!ios/build/",
-    "!**/__tests__/"
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "app.plugin.js",
+    "*.podspec"
   ],
   "homepage": "https://github.com/phucprime/react-native-image-editor#readme",
   "repository": {
@@ -25,7 +25,7 @@
     "url": "https://github.com/phucprime/react-native-image-editor/issues"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json",
+    "build": "bob build",
     "typecheck": "tsc --noEmit",
     "lint": "prettier --check src/",
     "format": "prettier --write src/",
@@ -57,6 +57,20 @@
       "javaPackageName": "ui.photoeditor"
     }
   },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.json"
+        }
+      ]
+    ]
+  },
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-native": ">=0.73.0"
@@ -73,6 +87,7 @@
     "@types/react": "18.2.0 || 19.0.0",
     "prettier": "3.2.0",
     "react-native": "0.78.2",
+    "react-native-builder-bob": "0.43.1",
     "typescript": "5.9.3"
   },
   "engines": {

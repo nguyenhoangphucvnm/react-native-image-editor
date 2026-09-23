@@ -1,34 +1,50 @@
 <h1 align="center">@phucprime/react-native-image-editor</h1>
 
 <p align="center">
-  Native image editor for React Native — crop, draw, text, stickers, and more.<br/>
-  Supports <strong>New Architecture</strong> (Fabric + TurboModules) and the classic bridge.
+  A high-performance, native image editing library for React Native — crop, draw, text, stickers, and more.<br/>
+  Fully supports the <strong>New Architecture</strong> (Fabric + TurboModules) and legacy bridge mode.
 </p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@phucprime/react-native-image-editor"><img src="https://img.shields.io/npm/v/@phucprime/react-native-image-editor.svg?style=flat-square" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/@phucprime/react-native-image-editor"><img src="https://img.shields.io/npm/dm/@phucprime/react-native-image-editor.svg?style=flat-square" alt="npm downloads" /></a>
   <a href="https://github.com/phucprime/react-native-image-editor/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@phucprime/react-native-image-editor.svg?style=flat-square" alt="license" /></a>
+  <a href="https://reactnative.dev/docs/the-new-architecture/landing-page"><img src="https://img.shields.io/badge/React%20Native-New%20Architecture-blue?style=flat-square" alt="New Architecture Ready" /></a>
 </p>
 
 ---
 
-| iOS | Android |
-| :-: | :-: |
+## ⚡ Features
+
+- ✂️ **Image Cropping**: Precision native cropping UI.
+- 🎨 **Freehand Drawing**: Brush tool with custom color choices.
+- ✍️ **Text Overlays**: Add, position, scale, and rotate text with custom colors.
+- 🎭 **Stickers**: Add customizable sticker overlays.
+- 🚀 **TurboModules Support**: Native performance on React Native New Architecture.
+
+## 📱 Screenshots
+
+|                   iOS                    |                   Android                    |
+| :--------------------------------------: | :------------------------------------------: |
 | <img src="assets/ios.gif" width="280" /> | <img src="assets/android.gif" width="280" /> |
 
-## Compatibility
+---
 
-| | Minimum | Tested |
-| --- | --- | --- |
-| React Native | 0.73 | **0.78.2** |
-| iOS | 13.0 | 18 |
-| Android | API 24 | API 35 |
-| Architecture | Old Arch ✅ | **New Arch ✅** |
+## 📋 Compatibility
 
-> Requires **JDK 17** and **Gradle 8.x** for Android builds.
+| Platform / Tool  | Minimum     | Tested          |
+| ---------------- | ----------- | --------------- |
+| **React Native** | `>= 0.73`   | **`0.78.2`**    |
+| **React**        | `>= 18.2.0` | **`19.0.0`**    |
+| **iOS**          | `13.0`      | `18.0`          |
+| **Android**      | API 24      | API 35          |
+| **Architecture** | Old Arch ✅ | **New Arch ✅** |
 
-## Installation
+> **Note:** Requires **JDK 17** and **Gradle 8.x** for Android builds.
+
+---
+
+## 📦 Installation
 
 ```bash
 npm install @phucprime/react-native-image-editor
@@ -75,7 +91,7 @@ Add activities to `AndroidManifest.xml`:
 <activity android:name="com.yalantis.ucrop.UCropActivity" />
 ```
 
-## Usage
+## 🛠️ Usage
 
 ### Promise API (recommended)
 
@@ -98,29 +114,33 @@ ImageEditor.open({
 });
 ```
 
-## Options
+## ⚙️ Configuration Options
 
-| Property | Type | Description |
-| -------- | ---- | ----------- |
-| `path` | `string` | Path to the image file |
-| `colors` | `string[]` | Hex colors for draw/text palette |
-| `stickers` | `string[]` | Sticker image names from native resources |
-| `hiddenControls` | `string[]` | Hide: `'text'` `'clear'` `'draw'` `'save'` `'share'` `'sticker'` `'crop'` |
-| `languages` | `object` | UI localization strings |
+| Property         | Type       | Default         | Description                                                                                            |
+| ---------------- | ---------- | --------------- | ------------------------------------------------------------------------------------------------------ |
+| `path`           | `string`   | **Required**    | Local file URI/path of the image to edit.                                                              |
+| `colors`         | `string[]` | Default palette | Array of hex color strings for drawing and text.                                                       |
+| `stickers`       | `string[]` | `[]`            | List of sticker image names located in native resource folders.                                        |
+| `hiddenControls` | `string[]` | `[]`            | Array of controls to hide (`'text'`, `'clear'`, `'draw'`, `'save'`, `'share'`, `'sticker'`, `'crop'`). |
+| `languages`      | `object`   | English         | Object map for localized UI text strings.                                                              |
 
-> **Tip:** Use [react-native-fs](https://github.com/itinance/react-native-fs) to copy images into the app sandbox before editing.
+> **Tip:** Use [react-native-fs](https://github.com/itinance/react-native-fs) or `@react-native-camera-roll/camera-roll` to handle native file paths in sandbox directories before passing them to the editor.
 
-## Stickers
+---
 
-- **iOS** — Add images to the Resources folder
-- **Android** — Add images to the `drawable` folder
+## 🎨 Adding Custom Stickers
 
-See the [Example](Example/) project for a working setup.
+- **iOS**: Add image assets (`.png`) to your main Xcode Project's **Resources** bundle.
+- **Android**: Add image assets (`.png`) to `android/app/src/main/res/drawable/`.
 
-## Credits
+##### Refer to the [Example](Example/) project for a ready-to-run demonstration setup.
 
-Based on [prscX/react-native-photo-editor](https://github.com/prscX/react-native-photo-editor), with photo editor SDKs by [eventtus](https://github.com/eventtus).
+## 📄 License
 
-## License
+Distributed under the [Apache 2.0 License](LICENSE).
 
-[Apache 2.0](LICENSE)
+---
+
+## 🙏 Credits
+
+Maintained by **[nguyenhoangphucvnm](https://github.com/nguyenhoangphucvnm)**. Based on [prscX/react-native-photo-editor](https://github.com/prscX/react-native-photo-editor), built upon native photo editor SDKs.

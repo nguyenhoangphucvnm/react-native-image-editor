@@ -1,38 +1,60 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+name: 🐛 Bug Report
+description: Create a report to help us reproduce and fix an issue.
+labels: ['bug', 'triage']
+body:
 
----
+- type: markdown
+  attributes:
+  value: |
+  Thanks for taking the time to fill out this bug report! Please search existing issues before submitting to ensure it hasn't already been reported.
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+- type: textarea
+  id: description
+  attributes:
+  label: Bug Description
+  description: A clear and concise description of what the bug is.
+  placeholder: Describe the problem...
+  validations:
+  required: true
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+- type: textarea
+  id: reproduction
+  attributes:
+  label: Steps To Reproduce
+  description: Steps to reproduce the behavior.
+  placeholder: | 1. Open image editor with `ImageEditor.open(...)` 2. Tap on the crop tool 3. Observe crash on Android device
+  validations:
+  required: true
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+- type: textarea
+  id: expected
+  attributes:
+  label: Expected Behavior
+  description: A clear description of what you expected to happen.
+  validations:
+  required: true
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+- type: dropdown
+  id: platform
+  attributes:
+  label: Affected Platform(s)
+  multiple: true
+  options: - iOS - Android - Both
+  validations:
+  required: true
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+- type: input
+  id: environment
+  attributes:
+  label: Environment Info
+  description: Please provide relevant environment versions.
+  placeholder: "React Native: 0.78.2 | React: 19.0.0 | New Architecture: Enabled | OS: iOS 18 / Android 15"
+  validations:
+  required: true
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+- type: textarea
+  id: logs
+  attributes:
+  label: Crash Logs or Screenshots
+  description: Add relevant error stack traces, Xcode / Logcat output, or video clips demonstrating the issue.
+  render: shell

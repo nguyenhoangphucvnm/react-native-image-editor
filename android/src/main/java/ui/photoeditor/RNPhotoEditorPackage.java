@@ -13,7 +13,7 @@ import com.facebook.react.uimanager.ViewManager;
 public class RNPhotoEditorPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new RNPhotoEditorModule(reactContext));
+      return Arrays.<NativeModule>asList((NativeModule) new RNPhotoEditorModule(reactContext));
     }
 
     @Override
