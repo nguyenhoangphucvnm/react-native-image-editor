@@ -1,0 +1,24 @@
+name: 💡 Feature Request
+description: Suggest an idea or enhancement for this library.
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve `@phucprime/react-native-image-editor`!
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Description
+      description: What problem does this feature solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution or feature API you would like to see added.
+    validations:
+      required: true
