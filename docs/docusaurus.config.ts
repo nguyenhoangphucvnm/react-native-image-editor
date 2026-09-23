@@ -37,7 +37,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl:
-            'https://github.com/nguyenhoangphucvnm/react-native-image-editor/edit/master/docs/docs/',
+            'https://github.com/nguyenhoangphucvnm/react-native-image-editor/edit/master/docs/',
         },
         blog: false,
         theme: {

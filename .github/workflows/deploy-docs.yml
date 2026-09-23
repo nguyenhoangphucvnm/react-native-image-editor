@@ -1,0 +1,56 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      # Re-deploy whenever docs content or config changes
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yml'
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Build & Deploy Docusaurus
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: docs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Full history needed for Docusaurus last-updated dates
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Docusaurus site
+        run: npm run build
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # publish the compiled output from docs/build/
+          publish_dir: docs/build
+          # keep a clean branch — only the latest build
+          force_orphan: true
+          # Docusaurus already adds .nojekyll; this ensures Jekyll is disabled
+          enable_jekyll: false
+          commit_message: "docs: deploy ${{ github.sha }}"
