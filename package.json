@@ -16,13 +16,13 @@
     "app.plugin.js",
     "*.podspec"
   ],
-  "homepage": "https://github.com/phucprime/react-native-image-editor#readme",
+  "homepage": "https://github.com/nguyenhoangphucvnm/react-native-image-editor#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phucprime/react-native-image-editor.git"
+    "url": "git+https://github.com/nguyenhoangphucvnm/react-native-image-editor.git"
   },
   "bugs": {
-    "url": "https://github.com/phucprime/react-native-image-editor/issues"
+    "url": "https://github.com/nguyenhoangphucvnm/react-native-image-editor/issues"
   },
   "scripts": {
     "build": "bob build",
@@ -31,7 +31,8 @@
     "format": "prettier --write src/",
     "clean": "rm -rf lib/",
     "prepare": "npm run clean && npm run build",
-    "release": "npm run prepare && npm publish --access public --registry https://registry.npmjs.org/"
+    "release": "npm run prepare && npm publish --access public --registry https://registry.npmjs.org/",
+    "release:github": "dotenv -- npm publish"
   },
   "keywords": [
     "react-native",
@@ -85,6 +86,7 @@
   },
   "devDependencies": {
     "@types/react": "18.2.0 || 19.0.0",
+    "dotenv-cli": "11.0.0",
     "prettier": "3.2.0",
     "react-native": "0.78.2",
     "react-native-builder-bob": "0.43.1",
@@ -92,5 +94,8 @@
   },
   "engines": {
     "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

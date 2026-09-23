@@ -68,3 +68,4 @@ buck-out/
 *.tsbuildinfo
 .yarn
 .pnp*
+.env
