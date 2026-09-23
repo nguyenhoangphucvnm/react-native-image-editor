@@ -1,0 +1,262 @@
+/* ── Hero ─────────────────────────────────────────────────────── */
+
+.heroBanner {
+  padding: 5rem 0 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 3rem 1rem;
+  }
+}
+
+.heroInner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff !important;
+  margin-bottom: 0.75rem;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
+}
+
+.heroBadges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.heroButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* ── Sections ─────────────────────────────────────────────────── */
+
+.featuresSection,
+.compatSection,
+.installSection {
+  padding: 4rem 0;
+}
+
+.compatSection {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.sectionHeading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+/* ── Feature cards ───────────────────────────────────────────── */
+
+.featureCol {
+  margin-bottom: 1.5rem;
+}
+
+.featureCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.featureEmoji {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.featureTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.featureDesc {
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700);
+  flex: 1;
+  margin: 0;
+}
+
+/* ── Compat table ─────────────────────────────────────────────── */
+
+.compatTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.compatTable th,
+.compatTable td {
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  text-align: left;
+}
+
+.compatTable thead th {
+  background: var(--ifm-color-primary);
+  color: #fff;
+  font-weight: 700;
+  border-color: var(--ifm-color-primary-dark);
+}
+
+.compatTable tbody tr:nth-child(even) {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* ── Install section ─────────────────────────────────────────── */
+
+.installBlock {
+  background: var(--ifm-color-emphasis-400);
+  color: var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  white-space: pre;
+  margin-bottom: 0;
+}
+
+[data-theme='light'] .installBlock {
+  background: #20232a;
+  color: #e6edf3;
+}
+
+.installCta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* ── Screenshots section ─────────────────────────────────────── */
+
+.screenshotsSection {
+  padding: 4rem 0 4.5rem;
+}
+
+.screenshotsRow {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.screenshotCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Platform badge — "iOS" / "Android" pill above each GIF */
+.screenshotPlatformBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.platformDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Phone-shaped frame around the GIF */
+.screenshotFrame {
+  border-radius: 36px;
+  overflow: hidden;
+  border: 3px solid var(--ifm-color-emphasis-300);
+  box-shadow:
+    0 0 0 6px var(--ifm-color-emphasis-100),
+    0 16px 48px rgba(0, 0, 0, 0.18);
+  background: #000;
+  /* Fix intrinsic size so both cards stay the same height */
+  width: 280px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.screenshotFrame:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow:
+    0 0 0 6px var(--ifm-color-emphasis-100),
+    0 24px 60px rgba(8, 126, 164, 0.22);
+}
+
+.screenshotGif {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Prevents layout shift while GIF loads */
+  min-height: 420px;
+  object-fit: cover;
+}
+
+[data-theme='dark'] .screenshotFrame {
+  border-color: var(--ifm-color-emphasis-400);
+  box-shadow:
+    0 0 0 6px var(--ifm-color-emphasis-200),
+    0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] .screenshotFrame:hover {
+  box-shadow:
+    0 0 0 6px var(--ifm-color-emphasis-200),
+    0 24px 60px rgba(97, 218, 251, 0.18);
+}
+
+@media screen and (max-width: 768px) {
+  .screenshotsRow {
+    gap: 2rem;
+  }
+
+  .screenshotFrame {
+    width: 240px;
+  }
+
+  .screenshotGif {
+    min-height: 360px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .screenshotFrame {
+    width: 200px;
+    border-radius: 28px;
+  }
+
+  .screenshotGif {
+    min-height: 300px;
+  }
+}

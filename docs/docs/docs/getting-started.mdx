@@ -1,0 +1,109 @@
+---
+id: getting-started
+title: Getting Started
+sidebar_label: 🚀 Getting Started
+slug: /getting-started
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Getting Started
+
+`@phucprime/react-native-image-editor` is a native image editing library for React Native that provides crop, freehand drawing, text overlays, and sticker support on both iOS and Android. It ships a TurboModule codegen spec and runs on both the **New Architecture** (Fabric + TurboModules) and the **classic bridge**.
+
+## Prerequisites
+
+| Requirement | Minimum |
+|---|---|
+| React Native | `>= 0.73` |
+| React | `>= 18.2.0` |
+| iOS | `13.0` |
+| Android | API `24` (Android 7) |
+| Node.js | `>= 16` |
+| JDK (Android) | `17` |
+| Gradle (Android) | `8.x` |
+
+## 1 — Install the package
+
+<Tabs groupId="package-manager">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @phucprime/react-native-image-editor
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn">
+
+```bash
+yarn add @phucprime/react-native-image-editor
+```
+
+</TabItem>
+</Tabs>
+
+## 2 — Platform setup
+
+Native modules require a small amount of platform-specific configuration. Follow the guide for your platform:
+
+- **[iOS setup →](./installation/ios)**
+- **[Android setup →](./installation/android)**
+
+## 3 — Basic usage
+
+### Promise API (recommended)
+
+```typescript
+import { ImageEditor } from '@phucprime/react-native-image-editor';
+
+async function editPhoto(imagePath: string) {
+  try {
+    const editedPath = await ImageEditor.edit(imagePath, {
+      colors: ['#ff0000', '#00ff00', '#0000ff'],
+      stickers: ['sticker1', 'sticker2'],
+    });
+    console.log('Saved to:', editedPath);
+  } catch (e) {
+    // User tapped Cancel — e.message contains the result code
+    console.log('Cancelled:', e);
+  }
+}
+```
+
+### Callback API
+
+```typescript
+import { ImageEditor } from '@phucprime/react-native-image-editor';
+
+ImageEditor.open({
+  path: '/path/to/image.jpg',
+  colors: ['#e74c3c', '#2ecc71', '#3498db'],
+  stickers: ['heart', 'star'],
+  hiddenControls: ['share'],          // hide the share button
+  onDone: (editedPath) => {
+    console.log('Saved to:', editedPath);
+  },
+  onCancel: (resultCode) => {
+    console.log('Cancelled, code:', resultCode);
+  },
+});
+```
+
+:::tip Tip — getting a file path
+The editor requires a **local file path** (not a remote URL or an asset URI). Use [`react-native-fs`](https://github.com/itinance/react-native-fs) to resolve paths in the app sandbox, or `@react-native-camera-roll/camera-roll` to copy photos out of the media library first.
+
+See the [File Paths guide](./guides/file-paths) for full details.
+:::
+
+## Next steps
+
+| Topic | Description |
+|---|---|
+| [iOS Installation](./installation/ios) | Podfile configuration, `Info.plist` permissions |
+| [Android Installation](./installation/android) | JitPack, manifest activities |
+| [API Reference](./api/image-editor) | Full `ImageEditor` class docs |
+| [Stickers Guide](./guides/stickers) | Adding custom sticker assets |
+| [Localization Guide](./guides/localization) | Customising UI strings |
+| [Hidden Controls](./guides/hidden-controls) | Show/hide toolbar buttons |
+| [Architecture](./architecture) | New Arch vs Old Arch details |

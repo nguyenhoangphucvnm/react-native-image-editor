@@ -1,0 +1,83 @@
+/**
+ * Custom CSS for React Native Image Editor docs.
+ * Primary palette uses React Native's signature blue (#61dafb / #20232a).
+ */
+
+:root {
+  --ifm-color-primary: #087ea4;
+  --ifm-color-primary-dark: #077193;
+  --ifm-color-primary-darker: #066a8b;
+  --ifm-color-primary-darkest: #055772;
+  --ifm-color-primary-light: #098bb5;
+  --ifm-color-primary-lighter: #0a92bd;
+  --ifm-color-primary-lightest: #0da5d6;
+  --ifm-code-font-size: 94%;
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, sans-serif;
+  --docusaurus-highlighted-code-line-bg: rgba(8, 126, 164, 0.08);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #61dafb;
+  --ifm-color-primary-dark: #44d4f9;
+  --ifm-color-primary-darker: #36d1f9;
+  --ifm-color-primary-darkest: #09c4f7;
+  --ifm-color-primary-light: #7ee0fc;
+  --ifm-color-primary-lighter: #8ce3fc;
+  --ifm-color-primary-lightest: #b6edfe;
+  --ifm-background-color: #0d1117;
+  --ifm-background-surface-color: #161b22;
+  --docusaurus-highlighted-code-line-bg: rgba(97, 218, 251, 0.1);
+}
+
+/* ── Hero banner ── */
+.hero--primary {
+  background: linear-gradient(135deg, #20232a 0%, #087ea4 100%);
+}
+
+[data-theme='dark'] .hero--primary {
+  background: linear-gradient(135deg, #0d1117 0%, #0a3d52 100%);
+}
+
+/* ── Badge pills ── */
+.badge--platform {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.35rem;
+}
+.badge--ios    { background: #e8f4f8; color: #0071c5; }
+.badge--android { background: #e8f8e8; color: #3ddc84; }
+.badge--new-arch { background: #fff3cd; color: #856404; }
+
+[data-theme='dark'] .badge--ios     { background: #0a3d52; color: #61dafb; }
+[data-theme='dark'] .badge--android { background: #0a2e0a; color: #3ddc84; }
+[data-theme='dark'] .badge--new-arch { background: #332700; color: #ffc107; }
+
+/* ── Feature cards ── */
+.feature-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.feature-card:hover {
+  box-shadow: 0 4px 20px rgba(8, 126, 164, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ── Compatibility table accents ── */
+.compat-yes { color: #2da44e; font-weight: 600; }
+.compat-no  { color: #cf222e; }
+
+/* ── Code block tweaks ── */
+.prism-code {
+  border-radius: 8px !important;
+}
+
+/* ── Admonition icons (keep readable in both themes) ── */
+[data-theme='dark'] .alert {
+  border-left-color: var(--ifm-color-primary);
+}

@@ -1,13 +1,18 @@
+---
+id: changelog
+title: Changelog
+sidebar_label: 📝 Changelog
+---
+
 # Changelog
 
-All notable changes to **`@phucprime/react-native-image-editor`** are documented in this file.
+All notable changes to `@phucprime/react-native-image-editor` are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [1.0.3] — 2026-09-17
+## [1.0.3](https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.3) — 2026-09-17
 
 ### Fixed
 
@@ -24,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.2] — 2026-02-27
+## [1.0.2](https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.2) — 2026-02-27
 
 ### Added
 
@@ -45,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.1] — 2026-02-27
+## [1.0.1](https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.1) — 2026-02-27
 
 ### Added
 
@@ -62,9 +67,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Flipper Integration**: Removed legacy `ReactNativeFlipper.java` debug/release files from the Android Example app.
 
+### Contributors
+
+- First contribution by [@nguyenhoangphucvnm](https://github.com/nguyenhoangphucvnm) in [#2](https://github.com/nguyenhoangphucvnm/react-native-image-editor/pull/2).
+
 ---
 
-## [1.0.0] — 2026-02-26
+## [1.0.0](https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.0) — 2026-02-26
 
 ### Added
 
@@ -88,10 +97,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `PhotoEditor.Edit()` — use `ImageEditor.open()` or `ImageEditor.edit()` instead.
 - `PhotoEditorProps` type — use `ImageEditorConfig` instead.
 - `Language` type — use `ImageEditorLanguage` instead.
-
----
-
-[1.0.3]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.3
-[1.0.2]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.2
-[1.0.1]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.1
-[1.0.0]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.0
