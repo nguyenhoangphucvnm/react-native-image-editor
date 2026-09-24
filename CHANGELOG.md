@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.4] — 2026-09-24
+
+### Added
+
+- **Yarn Workspaces monorepo**: Declared `"workspaces": ["Example"]` in the root `package.json` and set `nmHoistingLimits: workspaces` in `.yarnrc.yml`. `Example/` is now a proper workspace member — `yarn install` at the repo root installs all dependencies for both the library and the Example app, and creates the `@phucprime/react-native-image-editor` symlink inside `Example/node_modules/@phucprime/` so Metro and CocoaPods auto-linking find it correctly.
+- **Documentation site** (`docs/`): Comprehensive Docusaurus 3.10.2 site deployed to GitHub Pages at `https://nguyenhoangphucvnm.github.io/react-native-image-editor/`. Includes Getting Started, full iOS/Android installation guides, API reference (`ImageEditor`, all TypeScript types), four usage guides (Stickers, Localization, Hidden Controls, File Paths), Architecture deep-dive, Troubleshooting, and Changelog pages.
+- **GitHub Actions — docs deploy** (`.github/workflows/deploy-docs.yml`): Workflow that builds the Docusaurus site and pushes `docs/build/` to the `gh-pages` branch on every push to `master` that touches `docs/**`. GitHub Pages now serves the compiled HTML from `gh-pages` root rather than the raw source folder.
+- **GitHub Actions — release publish** (`.github/workflows/release.yml`): Fixed malformed workflow (bare `steps:` block with no `name`/`on`/`jobs` wrapper). Now triggers on GitHub Release creation, sets up Node 20 with `registry-url: https://npm.pkg.github.com`, and publishes via `NODE_AUTH_TOKEN`.
+
+### Changed
+
+**TurboModule / New Architecture — JS layer**
+
+- `src/NativeRNPhotoEditor.ts`: Replaced `Object` (rejected by strict codegen validator in RN 0.74+) with a locally-declared `UnsafeObject = {}` type. This is the only form the RN codegen AST parser recognises as a passthrough object type — `Record<string, any>` was also tried and rejected with `UnsupportedGenericParserError: Unrecognised generic type 'Record'`.
+- `src/NativeRNPhotoEditor.ts`: Migrated from two `Callback` parameters to a single `Promise<string>` return value. The method is renamed from `Edit` to `edit` (camelCase, matching codegen conventions).
+- `src/index.ts`: All JS logic now routes through a single `callNative()` helper that calls `NativeRNPhotoEditor.edit(props)`. The public API (`ImageEditor.open()`, `ImageEditor.edit()`) is unchanged.
+
+**TurboModule / New Architecture — Android**
+
+- `android/src/main/java/ui/photoeditor/RNPhotoEditorPackage.java`: Migrated from `ReactPackage` to `TurboReactPackage`. Without this, `TurboModuleRegistry.getEnforcing('RNPhotoEditor')` throws "No TurboModule found" on New Architecture because `ReactPackage.createNativeModules()` is never consulted by the TurboModule registry.
+- `android/src/main/java/ui/photoeditor/RNPhotoEditorModule.java`: Replaced two `Callback` parameters with a `Promise`. Added `public static final String NAME = "RNPhotoEditor"`. Added `volatile` + `synchronized` guards on `mPendingPromise` to prevent race conditions between the JS thread (write) and the UI thread (`onActivityResult` read/null). Added guards for null `Activity`, null `Intent`, null `imagePath`, and a try/catch around `Color.parseColor()`. Added an `ALREADY_OPEN` rejection if a second call arrives while the editor is already open.
+- `android/src/newarch/java/ui/photoeditor/RNPhotoEditorSpec.java`: Updated abstract method signature to `edit(ReadableMap props, Promise promise)`.
+- `android/src/oldarch/java/ui/photoeditor/RNPhotoEditorSpec.java`: Updated abstract method signature to match New Arch — `edit(ReadableMap props, Promise promise)` — so `RNPhotoEditorModule.java` compiles identically on both architectures.
+- `android/build.gradle`: Replaced `implementation 'com.facebook.react:react-native:+'` (open range, version skew risk) with `compileOnly 'com.facebook.react:react-android'` (RN 0.71+ artifact name, resolved from the host app at runtime).
+
+**TurboModule / New Architecture — iOS**
+
+- `ios/RNImageEditor.podspec`: Added `.swift` to `source_files` (was `**/*.{h,m,mm}` — `RNPhotoEditor.swift` was silently never compiled for pod consumers). Added `CLANG_CXX_LANGUAGE_STANDARD = c++17` and `OTHER_CPLUSPLUSFLAGS` to `pod_target_xcconfig`. Added full `install_modules_dependencies` / fallback guard for New Architecture pod dependencies.
+- `ios/RNPhotoEditor.mm`: Changed `RCT_EXTERN_METHOD` selector from `Edit:onDone:onCancel:` (using deprecated `RCTResponseSenderBlock`) to `edit:resolve:reject:` (using `RCTPromiseResolveBlock` / `RCTPromiseRejectBlock`), matching the codegen-generated `NativeRNPhotoEditorSpec` protocol.
+- `ios/RNPhotoEditor.swift`: Replaced `RCTResponseSenderBlock` instance fields with `RCTPromiseResolveBlock` / `RCTPromiseRejectBlock`. Replaced deprecated `UIApplication.shared.delegate?.window` (returns `nil` in scene-based apps since iOS 13) with a `topPresentingViewController()` helper that walks `UIApplication.shared.connectedScenes` to find the foreground-active `UIWindowScene` and its key window. Added `clearPending()` helper to atomically nil all stored state after each session. Added `ALREADY_OPEN` rejection guard.
+
+### Fixed
+
+- `Example/` `yarn install` failing with `Workspace not found (@phucprime/react-native-image-editor@workspace:*)`: Caused by `Example/yarn.lock`, `Example/.yarn/cache`, and `Example/.yarnrc.yml` all existing, which made Yarn treat `Example/` as a standalone project rather than a workspace member. All three were removed; the root workspace config now governs everything.
+- `pod install` failing with `UnsupportedGenericParserError: Unrecognised generic type 'Record'`: The codegen parser rejected `Record<string, any>` in `NativeRNPhotoEditor.ts`. Fixed by declaring `type UnsafeObject = {}` — the exact form the RN codegen AST parser maps to `NSDictionary *` on iOS and `ReadableMap` on Android.
+
+---
+
 ## [1.0.3] — 2026-09-17
 
 ### Fixed
@@ -91,6 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.0.4]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.4
 [1.0.3]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.3
 [1.0.2]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.2
 [1.0.1]: https://github.com/nguyenhoangphucvnm/react-native-image-editor/releases/tag/1.0.1

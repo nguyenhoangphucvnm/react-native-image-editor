@@ -1,23 +1,61 @@
-
 package ui.photoeditor;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import androidx.annotation.NonNull;
 
-import com.facebook.react.ReactPackage;
+import com.facebook.react.TurboReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.uimanager.ViewManager;
+import com.facebook.react.module.model.ReactModuleInfo;
+import com.facebook.react.module.model.ReactModuleInfoProvider;
 
-public class RNPhotoEditorPackage implements ReactPackage {
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * ReactPackage registration for RNPhotoEditor.
+ *
+ * Extends {@link TurboReactPackage} instead of the old {@link com.facebook.react.ReactPackage}.
+ *
+ * Why TurboReactPackage?
+ * ──────────────────────
+ * On New Architecture, React Native discovers TurboModules through the
+ * {@link TurboReactPackage#getModule} / {@link TurboReactPackage#getReactModuleInfoProvider}
+ * contract. A plain {@code ReactPackage} that only overrides
+ * {@code createNativeModules()} is never consulted by the TurboModule registry,
+ * so {@code TurboModuleRegistry.getEnforcing("RNPhotoEditor")} would throw
+ * "No TurboModule found for RNPhotoEditor" at runtime on New Arch.
+ *
+ * On Old Architecture, {@link TurboReactPackage} delegates back to
+ * {@code getModule()} so no separate code path is needed.
+ */
+public class RNPhotoEditorPackage extends TurboReactPackage {
+
     @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList((NativeModule) new RNPhotoEditorModule(reactContext));
+    public NativeModule getModule(
+            @NonNull String name,
+            @NonNull ReactApplicationContext reactContext) {
+        if (RNPhotoEditorModule.NAME.equals(name)) {
+            return new RNPhotoEditorModule(reactContext);
+        }
+        return null;
     }
 
     @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-      return Collections.emptyList();
+    public ReactModuleInfoProvider getReactModuleInfoProvider() {
+        return () -> {
+            Map<String, ReactModuleInfo> map = new HashMap<>();
+            map.put(
+                RNPhotoEditorModule.NAME,
+                new ReactModuleInfo(
+                    RNPhotoEditorModule.NAME,   // name
+                    RNPhotoEditorModule.NAME,   // className (used for logging)
+                    false,   // canOverrideExistingModule
+                    false,   // needsEagerInit
+                    false,   // isCxxModule
+                    true     // isTurboModule — registers with the JSI TurboModule registry
+                )
+            );
+            return map;
+        };
     }
 }

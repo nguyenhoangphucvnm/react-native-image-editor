@@ -64,3 +64,8 @@ yarn-error.log
 
 # testing
 /coverage
+
+# Yarn workspace — always run `yarn install` from the REPO ROOT, not here.
+# Example is a workspace member; it has no standalone lockfile.
+yarn.lock
+.yarn/

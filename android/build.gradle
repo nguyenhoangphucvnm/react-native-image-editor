@@ -68,7 +68,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.facebook.react:react-native:+'
+    // Use compileOnly with the RN 0.71+ artifact name.
+    // 'react-native:+' open range risks version skew between codegen output
+    // and runtime; compileOnly ensures the host app's own react-android
+    // version is used at runtime without pulling in a second copy.
+    compileOnly 'com.facebook.react:react-android'
     implementation files('libs/photo-editor-android.jar')
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     implementation 'com.google.android.material:material:1.9.0'

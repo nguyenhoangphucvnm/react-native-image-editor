@@ -1,12 +1,8 @@
 import NativeRNPhotoEditor from './NativeRNPhotoEditor';
 
-// TurboModuleRegistry.getEnforcing handles both architectures:
-// - New Architecture: Uses TurboModule system directly
-// - Old Architecture: Falls back to NativeModules bridge (RN 0.73+)
-const RNPhotoEditor = NativeRNPhotoEditor;
-
 /**
  * Localization strings for the image editor UI.
+ * All fields are optional — unset keys fall back to the English defaults.
  */
 export interface ImageEditorLanguage {
   /** Title for the "Done" button */
@@ -39,7 +35,9 @@ export interface ImageEditorLanguage {
   eraserTitle?: string;
 }
 
-/** Editor control types that can be shown or hidden. */
+/**
+ * Editor control identifiers that can be hidden via `hiddenControls`.
+ */
 export type EditorControl =
   | 'text'
   | 'clear'
@@ -53,49 +51,55 @@ export type EditorControl =
  * Configuration options for the image editor.
  */
 export interface ImageEditorConfig {
-  /** Path to the image file to edit (required). */
+  /**
+   * Local file path (or file:// URI) of the image to edit.
+   * The editor overwrites this file when the user taps Done.
+   */
   path: string;
 
   /**
-   * Array of hex color strings available for drawing and text.
-   * @default ['#000000', '#808080', '#a9a9a9', '#FFFFFE', '#0000ff', '#00ff00', '#ff0000', '#ffff00', '#ffa500', '#800080', '#00ffff', '#a52a2a', '#ff00ff']
+   * Hex color strings for the drawing and text colour picker.
+   * Accepts #RGB, #RRGGBB, and #AARRGGBB formats.
+   * @default DEFAULT_COLORS (13-colour palette)
    */
   colors?: string[];
 
   /**
-   * Array of sticker image names to show in the sticker picker.
-   * Images must be added to native project resources.
-   * - iOS: Add to Resources folder
-   * - Android: Add to drawable folder
+   * Sticker image names from native resources.
+   * iOS: main bundle image names. Android: res/drawable/ file names (no extension).
    * @default []
    */
   stickers?: string[];
 
   /**
-   * Array of editor controls to hide.
+   * Controls to remove from the editor toolbar.
    * @default []
    */
   hiddenControls?: EditorControl[];
 
   /**
-   * Localization strings for the editor UI.
+   * Localization overrides for editor UI strings.
+   * Unset keys fall back to English defaults.
    */
   languages?: ImageEditorLanguage;
 
   /**
-   * Callback invoked when editing is complete.
-   * @param imagePath - The path to the edited image file.
+   * Called when the user saves the edited image.
+   * `imagePath` is the local path to the overwritten file.
+   * Only used by `ImageEditor.open()` — ignored by `ImageEditor.edit()`.
    */
   onDone?: (imagePath: string) => void;
 
   /**
-   * Callback invoked when editing is cancelled.
-   * @param resultCode - The native result code.
+   * Called when the user dismisses without saving.
+   * Only used by `ImageEditor.open()` — ignored by `ImageEditor.edit()`.
    */
-  onCancel?: (resultCode: number) => void;
+  onCancel?: () => void;
 }
 
-/** Default color palette for the editor. */
+// ─── Defaults ────────────────────────────────────────────────────────────────
+
+/** Built-in 13-colour drawing palette. */
 const DEFAULT_COLORS: string[] = [
   '#000000',
   '#808080',
@@ -112,7 +116,7 @@ const DEFAULT_COLORS: string[] = [
   '#ff00ff',
 ];
 
-/** Default localization strings. */
+/** Built-in English UI strings. */
 const DEFAULT_LANGUAGES: Required<ImageEditorLanguage> = {
   doneTitle: 'Done',
   saveTitle: 'Save',
@@ -131,103 +135,104 @@ const DEFAULT_LANGUAGES: Required<ImageEditorLanguage> = {
   eraserTitle: 'Eraser',
 };
 
+// ─── Core native call ─────────────────────────────────────────────────────────
+
 /**
- * React Native Image Editor - Native photo editing bridge for iOS and Android.
+ * Build the props object and call the native TurboModule.
+ *
+ * The native module exposes a single `edit(props): Promise<string>` method.
+ * This is the only point in the codebase that touches the native boundary,
+ * keeping the public API (open / edit) as thin wrappers.
+ */
+function callNative(config: ImageEditorConfig): Promise<string> {
+  const {
+    path,
+    stickers = [],
+    hiddenControls = [],
+    colors = DEFAULT_COLORS,
+    languages,
+  } = config;
+
+  const mergedLanguages: Required<ImageEditorLanguage> = languages
+    ? { ...DEFAULT_LANGUAGES, ...languages }
+    : DEFAULT_LANGUAGES;
+
+  return NativeRNPhotoEditor.edit({
+    path,
+    colors,
+    hiddenControls,
+    stickers,
+    languages: mergedLanguages,
+  });
+}
+
+// ─── Public API ───────────────────────────────────────────────────────────────
+
+/**
+ * React Native Image Editor — native photo editing for iOS and Android.
+ *
+ * Supports the New Architecture (Fabric + TurboModules) and the classic bridge.
  *
  * @example
  * ```ts
- * import { ImageEditor } from '@phucprime/react-native-image-editor';
- *
- * // Callback-based usage
- * ImageEditor.open({
- *   path: '/path/to/image.jpg',
- *   onDone: (editedPath) => console.log('Edited:', editedPath),
- *   onCancel: () => console.log('Cancelled'),
+ * // Promise / async-await (recommended)
+ * const saved = await ImageEditor.edit('/path/to/photo.jpg', {
+ *   colors: ['#ff0000', '#00ff00', '#0000ff'],
+ *   stickers: ['heart', 'star'],
  * });
  *
- * // Promise-based usage
- * const editedPath = await ImageEditor.edit('/path/to/image.jpg', {
- *   colors: ['#ff0000', '#00ff00', '#0000ff'],
+ * // Callback
+ * ImageEditor.open({
+ *   path: '/path/to/photo.jpg',
+ *   onDone:   (path) => console.log('saved:', path),
+ *   onCancel: ()     => console.log('cancelled'),
  * });
  * ```
  */
 class ImageEditor {
   /**
-   * Open the image editor with callback-based API.
+   * Edit an image and receive the result via callbacks.
    *
-   * @param config - Editor configuration options.
+   * @param config - Editor configuration including `onDone` / `onCancel`.
    */
   static open(config: ImageEditorConfig): void {
-    const {
-      stickers = [],
-      hiddenControls = [],
-      colors = DEFAULT_COLORS,
-      languages,
-      onDone,
-      onCancel,
-      ...rest
-    } = config;
-
-    const mergedLanguages = languages
-      ? { ...DEFAULT_LANGUAGES, ...languages }
-      : DEFAULT_LANGUAGES;
-
-    RNPhotoEditor.Edit(
-      {
-        colors,
-        hiddenControls,
-        stickers,
-        languages: mergedLanguages,
-        ...rest,
-      },
-      (imagePath: string) => {
-        onDone?.(imagePath);
-      },
-      (resultCode: number) => {
-        onCancel?.(resultCode);
-      },
-    );
+    callNative(config).then(config.onDone).catch(() => config.onCancel?.());
   }
 
   /**
-   * Edit an image and return a promise with the edited image path.
+   * Edit an image and return a Promise.
    *
-   * @param path - Path to the image file to edit.
-   * @param options - Optional editor configuration (excluding path, onDone, onCancel).
-   * @returns Promise that resolves with the edited image path, or rejects if cancelled.
+   * Resolves with the saved image path.
+   * Rejects with `{ code: 'CANCELLED' }` when the user dismisses.
+   *
+   * @param path    - Local file path of the image to edit.
+   * @param options - Optional editor configuration (excludes path, onDone, onCancel).
    */
   static edit(
     path: string,
     options?: Omit<ImageEditorConfig, 'path' | 'onDone' | 'onCancel'>,
   ): Promise<string> {
-    return new Promise((resolve, reject) => {
-      ImageEditor.open({
-        ...options,
-        path,
-        onDone: resolve,
-        onCancel: (resultCode) =>
-          reject(new Error(`Editor cancelled with code: ${resultCode}`)),
-      });
-    });
+    return callNative({ ...options, path });
   }
 
   /**
-   * @deprecated Use `ImageEditor.open()` instead. This method is kept for backward compatibility.
+   * @deprecated Use `ImageEditor.open()` instead.
    */
   static Edit(config: ImageEditorConfig): void {
     ImageEditor.open(config);
   }
 }
 
+// ─── Exports ──────────────────────────────────────────────────────────────────
+
 /**
- * @deprecated Use `ImageEditor` instead. `PhotoEditor` is an alias kept for backward compatibility.
+ * @deprecated Use `ImageEditor` instead.
  */
 const PhotoEditor = ImageEditor;
 
 export { ImageEditor, PhotoEditor };
 export default ImageEditor;
 
-// Re-export legacy types for backward compatibility
 /** @deprecated Use `ImageEditorConfig` instead. */
 export type PhotoEditorProps = ImageEditorConfig;
 /** @deprecated Use `ImageEditorLanguage` instead. */

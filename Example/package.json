@@ -12,7 +12,7 @@
     "pod:install": "cd ios && pod install && cd .."
   },
   "dependencies": {
-    "@phucprime/react-native-image-editor": "../",
+    "@phucprime/react-native-image-editor": "workspace:*",
     "react": "19.0.0",
     "react-native": "0.78.2",
     "react-native-blob-util": "0.21.2",
