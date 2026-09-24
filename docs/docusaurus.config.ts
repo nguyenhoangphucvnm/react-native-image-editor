@@ -4,7 +4,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'React Native Image Editor',
-  tagline: 'Native crop, draw, text & stickers for iOS and Android — New Architecture ready.',
+  tagline:
+    'Native crop, draw, text & stickers for iOS and Android — New Architecture ready.',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -55,7 +56,7 @@ const config: Config = {
     announcementBar: {
       id: 'new-arch',
       content:
-        '🚀 <strong>v1.0.3</strong> — Now with React Native <strong>New Architecture</strong> (TurboModules + Fabric) support! <a href="/react-native-image-editor/docs/architecture">Learn more →</a>',
+        '🚀 <strong>v1.0.4</strong> — Now with React Native <strong>New Architecture</strong> (TurboModules + Fabric) support! <a href="/react-native-image-editor/docs/architecture">Learn more →</a>',
       backgroundColor: '#20232a',
       textColor: '#61dafb',
       isCloseable: true,
